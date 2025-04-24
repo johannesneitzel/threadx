@@ -67,8 +67,18 @@ int main()
 
 void    tx_application_define(void *first_unused_memory)
 {
+    CHAR    *pointer = TX_NULL;
 
-CHAR    *pointer = TX_NULL;
+    printf("sizeof CHAR=%zu\n", sizeof(CHAR));
+    printf("sizeof UCHAR=%zu\n", sizeof(UCHAR));
+    printf("sizeof INT=%zu\n", sizeof(INT));
+    printf("sizeof UINT=%zu\n", sizeof(UINT));
+    printf("sizeof LONG=%zu\n", sizeof(LONG));
+    printf("sizeof ULONG=%zu\n", sizeof(ULONG));
+    printf("sizeof SHORT=%zu\n", sizeof(SHORT));
+    printf("sizeof USHORT=%zu\n", sizeof(USHORT));
+    printf("sizeof ULONG64=%zu\n", sizeof(ULONG64));
+    printf("sizeof TX_THREAD=%zu\n", sizeof(TX_THREAD));
 
     /* Create a byte memory pool from which to allocate the thread stacks.  */
     tx_byte_pool_create(&byte_pool_0, "byte pool 0", first_unused_memory, DEMO_BYTE_POOL_SIZE);

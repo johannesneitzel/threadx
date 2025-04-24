@@ -307,6 +307,14 @@ cpu_set_t mask;
 
 void    _tx_initialize_start_interrupts(void)
 {
+    struct timespec ts;
+    clock_gettime(CLOCK_REALTIME, &ts);
+
+    printf("_tx_initialize_start_interrupts()");
+    
+    sleep(5);
+    
+    printf("slept enough..");
 
     /* Kick the timer thread off to generate the ThreadX periodic interrupt
        source.  */

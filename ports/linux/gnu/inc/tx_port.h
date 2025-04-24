@@ -127,6 +127,9 @@
 
 /* Define ThreadX basic types for this port.  */
 
+// Johannes: It's a mistake to deviate any type bitwidth from architecture only as it's determinded by compiler, system and architecture.
+#define __x86_64__ 0
+
 typedef void                                    VOID;
 typedef char                                    CHAR;
 typedef unsigned char                           UCHAR;

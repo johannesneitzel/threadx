@@ -5,6 +5,9 @@ project(threadx
     LANGUAGES C ASM
 )
 
+set(THREADX_ARCH "linux")
+set(THREADX_TOOLCHAIN "gnu")
+
 if(NOT DEFINED THREADX_ARCH)
     message(FATAL_ERROR "Error: THREADX_ARCH not defined")
 endif()
@@ -13,6 +16,7 @@ if(NOT DEFINED THREADX_TOOLCHAIN)
 endif()
 message(STATUS "THREADX_ARCH: ${THREADX_ARCH}")
 message(STATUS "THREADX_TOOLCHAIN: ${THREADX_TOOLCHAIN}")
+message(STATUS "PROJECT_NAME: ${PROJECT_NAME}")
 
 # Define our target library and an alias for consumers
 add_library(${PROJECT_NAME})
@@ -44,6 +48,7 @@ target_sources(freertos-threadx
 target_link_libraries(freertos-threadx PUBLIC threadx)
 
 # If the user provided an override, copy it to the custom directory
+set(TX_USER_FILE "${CMAKE_CURRENT_LIST_DIR}/ports/${THREADX_ARCH}/${THREADX_TOOLCHAIN}/inc/tx_port.h")
 if (NOT TX_USER_FILE)
     message(STATUS "Using default tx_user.h file")
     set(TX_USER_FILE ${CMAKE_CURRENT_LIST_DIR}/common/inc/tx_user_sample.h)
@@ -56,6 +61,16 @@ target_include_directories(${PROJECT_NAME}
     ${CUSTOM_INC_DIR}
 )
 target_compile_definitions(${PROJECT_NAME} PUBLIC "TX_INCLUDE_USER_DEFINE_FILE" )
+
+# Add the "demo" executable
+message(STATUS "${CMAKE_CURRENT_LIST_DIR}/ports/${THREADX_ARCH}/${THREADX_TOOLCHAIN}/inc")
+add_executable(demo ${CMAKE_CURRENT_LIST_DIR}/ports/${THREADX_ARCH}/${THREADX_TOOLCHAIN}/example_build/sample_threadx.c)
+target_include_directories(demo
+    PRIVATE
+    ${CMAKE_CURRENT_LIST_DIR}/ports/${THREADX_ARCH}/${THREADX_TOOLCHAIN}/inc
+    ${CMAKE_CURRENT_LIST_DIR}/common/inc
+)
+target_link_libraries(demo PRIVATE ${PROJECT_NAME})
 
 # Enable a build target that produces a ZIP file of all sources
 set(CPACK_SOURCE_GENERATOR "ZIP")
@@ -70,3 +85,5 @@ set(CPACK_SOURCE_IGNORE_FILES
 )
 set(CPACK_VERBATIM_VARIABLES YES)
 include(CPack)
+
+
